@@ -28,6 +28,9 @@ namespace NLog.Web
 
         private readonly IDictionary<string, object> _store;
 
+        /// <summary>
+        /// Current RequestContext
+        /// </summary>
         public static RequestContext Current = new RequestContext(CreateContext());
 
         /// <summary>

@@ -34,7 +34,7 @@ namespace NLog.Web.LayoutRenderers
     /// </code>
     /// </example>
     [LayoutRenderer("aspnet-application")]
-    public class AspNetApplicationValueLayoutRenderer : LayoutRenderer
+    public class AspNetApplicationValueLayoutRenderer : AspNetLayoutRendererBase
     {
         /// <summary>
         /// Gets or sets the variable name.
@@ -49,25 +49,21 @@ namespace NLog.Web.LayoutRenderers
         /// </summary>
         /// <param name="builder">The <see cref="StringBuilder"/> to append the rendered data to.</param>
         /// <param name="logEvent">Logging event.</param>
-        protected override void Append(StringBuilder builder, LogEventInfo logEvent)
+        protected override void DoAppend(StringBuilder builder, LogEventInfo logEvent)
         {
             if (this.Variable == null)
             {
                 return;
             }
 
-            HttpContext context = HttpContext.Current;
-            if (context == null)
-            {
-                return;
-            }
+            HttpContextBase context = HttpContextAccessor.HttpContext;
 
             if (context.Application == null)
             {
                 return;
             }
 
-            builder.Append(Convert.ToString(context.Application[this.Variable], CultureInfo.InvariantCulture));
+            builder.Append(Convert.ToString(context.Application[this.Variable], CultureInfo.CurrentUICulture));
         }
     }
 }

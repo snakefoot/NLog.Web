@@ -3,8 +3,10 @@ using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Web;
+using System.Web.SessionState;
 using NLog.Config;
 using NLog.LayoutRenderers;
+using NLog.Web.Internal;
 
 namespace NLog.Web.LayoutRenderers
 {
@@ -35,7 +37,7 @@ namespace NLog.Web.LayoutRenderers
     /// </code>
     /// </example>
     [LayoutRenderer("aspnet-session")]
-    public class AspNetSessionValueLayoutRenderer : LayoutRenderer
+    public class AspNetSessionValueLayoutRenderer : AspNetLayoutRendererBase
     {
         /// <summary>
         /// Gets or sets the session variable name.
@@ -55,44 +57,22 @@ namespace NLog.Web.LayoutRenderers
         /// </summary>
         /// <param name="builder">The <see cref="StringBuilder"/> to append the rendered data to.</param>
         /// <param name="logEvent">Logging event.</param>
-        protected override void Append(StringBuilder builder, LogEventInfo logEvent)
+        protected override void DoAppend(StringBuilder builder, LogEventInfo logEvent)
         {
             if (this.Variable == null)
             {
                 return;
             }
 
-            HttpContext context = HttpContext.Current;
-            if (context == null)
-            {
-                return;
-            }
+            HttpContextBase context = HttpContextAccessor.HttpContext;
 
             if (context.Session == null)
             {
                 return;
             }
+            var value = PropertyReader.GetValue(Variable, k => context.Session[k], EvaluateAsNestedProperties);
 
-
-            object value;
-            if (EvaluateAsNestedProperties)
-            {
-                var path = Variable.Split(new[] { '.' }, StringSplitOptions.RemoveEmptyEntries);
-
-                value = context.Session[path[0]];
-
-                foreach (var property in path.Skip(1))
-                {
-                    var propertyInfo = value.GetType().GetProperty(property);
-                    value = propertyInfo.GetValue(value, null);
-                } 
-            }
-            else
-            {
-                value = context.Session[Variable];
-            }
-
-            builder.Append(Convert.ToString(value, CultureInfo.InvariantCulture));
+            builder.Append(Convert.ToString(value, CultureInfo.CurrentUICulture));
         }
     }
 }

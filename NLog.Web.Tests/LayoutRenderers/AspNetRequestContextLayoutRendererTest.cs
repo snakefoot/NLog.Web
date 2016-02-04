@@ -2,16 +2,15 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NLog.LayoutRenderers;
 using NLog.Web.LayoutRenderers;
+using Xunit;
 
 namespace NLog.Web.Tests.LayoutRenderers
 {
-    [TestClass()]
-    public class AspNetRequestContextLayoutRendererTest : LayoutRendererTestsBase
+    public class AspNetRequestContextLayoutRendererTest
     {
-        [TestMethod()]
+        [Fact]
         public void SimpleTest()
         {
             var appSettingLayoutRenderer = new AspNetRequestContextLayoutRenderer()
@@ -22,7 +21,7 @@ namespace NLog.Web.Tests.LayoutRenderers
             ExecTest("a", "b", "b", appSettingLayoutRenderer);
         }
 
-        [TestMethod()]
+        [Fact]
         public void MissingTest()
         {
             var appSettingLayoutRenderer = new AspNetRequestContextLayoutRenderer()
@@ -34,7 +33,7 @@ namespace NLog.Web.Tests.LayoutRenderers
         }
 
 
-        [TestMethod()]
+        [Fact]
         public void FormatTest()
         {
             var appSettingLayoutRenderer = new AspNetRequestContextLayoutRenderer()
@@ -43,12 +42,12 @@ namespace NLog.Web.Tests.LayoutRenderers
                 Format = "yyyy-MM-dd"
             };
 
-            ExecTest("a", new DateTime(2020,1,30), "2020-01-30", appSettingLayoutRenderer);
+            ExecTest("a", new DateTime(2020, 1, 30), "2020-01-30", appSettingLayoutRenderer);
         }
 
 
 
-        [TestMethod()]
+        [Fact]
         public void CultureTest()
         {
             var appSettingLayoutRenderer = new AspNetRequestContextLayoutRenderer()
@@ -60,7 +59,6 @@ namespace NLog.Web.Tests.LayoutRenderers
             ExecTest("a", new DateTime(2020, 1, 30), "30-1-2020 00:00:00", appSettingLayoutRenderer);
         }
 
-
         /// <summary>
         /// set in Session and test
         /// </summary>
@@ -68,11 +66,13 @@ namespace NLog.Web.Tests.LayoutRenderers
         /// <param name="value">set this value</param>
         /// <param name="expected">expected</param>
         /// <param name="appSettingLayoutRenderer"></param>
-        private void ExecTest(string key, object value, object expected, LayoutRenderer appSettingLayoutRenderer)
+        private static void ExecTest(string key, object value, object expected, LayoutRenderer appSettingLayoutRenderer)
         {
-            RequestContext[key] = value;
+            RequestContext.Current[key] = value;
 
-            TestValues(expected, appSettingLayoutRenderer);
+            var rendered = appSettingLayoutRenderer.Render(LogEventInfo.CreateNullEvent());
+
+            Assert.Equal(expected, rendered);
         }
     }
 }

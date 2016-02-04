@@ -20,6 +20,8 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <DocumentationFile>bin\Debug\NLog.Web.XML</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -28,34 +30,52 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Release\NLog.Web.XML</DocumentationFile>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>true</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>NLog.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
-      <HintPath>..\packages\NLog.4.0.0\lib\net35\NLog.dll</HintPath>
+      <HintPath>..\packages\NLog.4.0.1\lib\net35\NLog.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Web" />
+    <Reference Include="System.Web.Abstractions" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DefaultHttpContextAccessor.cs" />
+    <Compile Include="IHttpContextAccessor.cs" />
+    <Compile Include="Internal\FormatHelper.cs" />
     <Compile Include="LayoutRenderers\AspNetApplicationValueLayoutRenderer.cs" />
+    <Compile Include="LayoutRenderers\AspNetItemValueLayoutRenderer.cs" />
+    <Compile Include="LayoutRenderers\AspNetLayoutRendererBase.cs" />
+    <Compile Include="LayoutRenderers\AspNetRequestContextLayoutRenderer.cs" />
     <Compile Include="LayoutRenderers\AspNetRequestValueLayoutRenderer.cs" />
     <Compile Include="LayoutRenderers\AspNetSessionIDLayoutRenderer.cs" />
     <Compile Include="LayoutRenderers\AspNetSessionValueLayoutRenderer.cs" />
     <Compile Include="LayoutRenderers\AspNetUserAuthTypeLayoutRenderer.cs" />
     <Compile Include="LayoutRenderers\AspNetUserIdentityLayoutRenderer.cs" />
     <Compile Include="LayoutRenderers\IISInstanceNameLayoutRenderer.cs" />
+    <Compile Include="Internal\PropertyReader.cs" />
     <Compile Include="NLogHttpModule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RequestContext.cs" />
     <Compile Include="Targets\AspNetTrace.cs" />
     <Compile Include="Targets\Wrappers\AspNetBufferingTargetWrapper.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="NLog.snk" />
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
