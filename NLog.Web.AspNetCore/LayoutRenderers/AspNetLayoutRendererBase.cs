@@ -2,7 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using NLog.Config;
 using NLog.LayoutRenderers;
+using static NLog.LayoutRenderers.LayoutRenderer;
+
 #if NETSTANDARD_1plus
 using NLog.Web.Internal;
 using Microsoft.AspNetCore.Http;
@@ -21,13 +24,8 @@ namespace NLog.Web.LayoutRenderers
         /// </summary>
         protected AspNetLayoutRendererBase()
         {
-#if !NETSTANDARD_1plus
-            HttpContextAccessor = new DefaultHttpContextAccessor();
-#endif
+
         }
-
-
-#if NETSTANDARD_1plus
 
         /// <summary>
         /// Context for DI
@@ -40,8 +38,8 @@ namespace NLog.Web.LayoutRenderers
         /// <returns>HttpContextAccessor or <c>null</c></returns>
         public IHttpContextAccessor HttpContextAccessor
         {
-            get { return _httpContextAccessor ?? (_httpContextAccessor = ServiceLocator.ServiceProvider?.GetService<IHttpContextAccessor>()); }
-            set { _httpContextAccessor = value; }
+            get => _httpContextAccessor ?? (_httpContextAccessor = GetHttpContextAccessor());
+            set => _httpContextAccessor = value;
         }
 
         /// <summary>
@@ -54,14 +52,6 @@ namespace NLog.Web.LayoutRenderers
                 Common.InternalLogger.Warn("Missing IHttpContextAccessor. Has it been registered before loading NLog Configuration? Consider reloading NLog Configuration after having registered the IHttpContextAccessor.");
             }
         }
-
-#else
-        /// <summary>
-        /// Provides access to the current request HttpContext.
-        /// </summary>
-        public IHttpContextAccessor HttpContextAccessor { get; set; }
-
-#endif
 
         /// <summary>
         /// Validates that the HttpContext is available and delegates append to subclasses.<see cref="StringBuilder" />.
@@ -95,6 +85,23 @@ namespace NLog.Web.LayoutRenderers
         }
 #endif
 
+#if !NETSTANDARD_1plus
+        private static IHttpContextAccessor GetHttpContextAccessor() => new DefaultHttpContextAccessor();
+#else
+        private static IHttpContextAccessor GetHttpContextAccessor() => ServiceLocator.ServiceProvider?.GetService<IHttpContextAccessor>();
+#endif
 
+        /// <summary>
+        /// Register a custom layout renderer with a callback function <paramref name="func" />. The callback recieves the logEvent and the current configuration.
+        /// </summary>
+        /// <param name="name">Name of the layout renderer - without ${}.</param>
+        /// <param name="func">Callback that returns the value for the layout renderer.</param>
+        public static void Register(string name, Func<LogEventInfo, IHttpContextAccessor, LoggingConfiguration, object> func)
+        {
+            object Func2(LogEventInfo logEventInfo, LoggingConfiguration configuration) => func(logEventInfo, GetHttpContextAccessor(), configuration);
+
+            Register(name, Func2);
+        }
     }
 }
+
