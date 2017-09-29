@@ -11,8 +11,15 @@ using NLog.LayoutRenderers;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+#endif
+
+#if NETSTANDARD_1plus && !NETSTANDARD2_0
 using Microsoft.Extensions.PlatformAbstractions;
 #endif
+
+//#if NETSTANDARD2_0
+//using ApplicationEnvironment.RuntimeFramework;
+//#endif
 
 namespace NLog.Web.LayoutRenderers
 {
@@ -58,9 +65,13 @@ namespace NLog.Web.LayoutRenderers
             {
                 //try entry assembly
 
-#if NETSTANDARD_1plus
+#if NETSTANDARD_1plus && !NETSTANDARD2_0
                 string assemblyVersion = PlatformServices.Default.Application.RuntimeFramework.Version.ToString();
 
+                builder.Append(assemblyVersion);
+
+#elif NETSTANDARD2_0
+                var assemblyVersion = System.Reflection.Assembly.GetEntryAssembly().GetName().Version.ToString();
                 builder.Append(assemblyVersion);
 #else
 
@@ -79,7 +90,7 @@ namespace NLog.Web.LayoutRenderers
                     builder.Append(assembly.GetName().Version.ToString());
                 }
 #endif
-                
+
             }
 
         }
