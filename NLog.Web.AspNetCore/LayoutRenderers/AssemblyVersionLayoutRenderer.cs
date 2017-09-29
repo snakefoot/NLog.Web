@@ -17,10 +17,6 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.PlatformAbstractions;
 #endif
 
-//#if NETSTANDARD2_0
-//using ApplicationEnvironment.RuntimeFramework;
-//#endif
-
 namespace NLog.Web.LayoutRenderers
 {
     /// <summary>
