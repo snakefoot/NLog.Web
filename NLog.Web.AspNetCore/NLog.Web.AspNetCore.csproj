@@ -6,7 +6,7 @@
     <VersionPrefix>4.3.2</VersionPrefix>
     <Authors>Julian Verdurmen</Authors>
     <TargetFrameworks>netstandard1.3;net451;netstandard2.0</TargetFrameworks>
-    <DefineConstants>$(DefineConstants);NETSTANDARD_1plus</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;ASP_NET_CORE;NETSTANDARD1_3</DefineConstants>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <AssemblyName>NLog.Web.AspNetCore</AssemblyName>
     <AssemblyOriginatorKeyFile>NLog.snk</AssemblyOriginatorKeyFile>

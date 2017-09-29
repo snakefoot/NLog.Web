@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFrameworks>net452;netcoreapp1.0</TargetFrameworks>
-    <DefineConstants>$(DefineConstants);NETSTANDARD_1plus</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;ASP_NET_CORE;NET452</DefineConstants>
     <AssemblyName>NLog.Web.AspNetCore.Tests</AssemblyName>
     <AssemblyVersion>1.2.3.0</AssemblyVersion>
   </PropertyGroup>
@@ -12,13 +12,25 @@
   </ItemGroup>
 
   <ItemGroup>
+
+    <PackageReference Include="NSubstitute" Version="2.0.3" />
+    <PackageReference Include="xunit" Version="2.3.0-beta5-*" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="2.3.0-beta5-*" />
+    <DotNetCliToolReference Include="dotnet-xunit" Version="2.3.0-beta5-*" />
+    <PackageReference Include="System.Runtime.InteropServices" Version="4.3.0" />
+  </ItemGroup>
+
+  <ItemGroup Condition=" '$(TargetFramework)' != 'netcoreapp2.0' ">
     <PackageReference Include="Microsoft.AspNetCore.Http" Version="1.1.1" />
     <PackageReference Include="System.Runtime.InteropServices" Version="4.3.0" />
     <PackageReference Include="xunit.runner.visualstudio" Version="2.3.0-beta3-*" />
     <PackageReference Include="Microsoft.AspNetCore.Hosting.Abstractions" Version="1.1.1" />
     <PackageReference Include="Microsoft.AspNetCore.Http.Extensions" Version="1.1.1" />
     <PackageReference Include="Microsoft.AspNetCore.Routing.Abstractions" Version="1.1.1" />
-    
+  </ItemGroup>
+  <ItemGroup Condition=" '$(TargetFramework)' == 'netcoreapp2.0' ">
+    <PackageReference Include="Microsoft.AspNetCore.Http" Version="2.0.0" />
+
     <PackageReference Include="NSubstitute" Version="2.0.2" />
     <PackageReference Include="xunit" Version="2.3.0-beta3-*" />
     <DotNetCliToolReference Include="dotnet-xunit" Version="2.3.0-beta3-*" />
