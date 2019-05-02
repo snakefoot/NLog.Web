@@ -50,18 +50,18 @@ namespace NLog.Web.LayoutRenderers
             {
                 return;
             }
-          
+
             if (!TryGetBody(httpRequest, out var body))
             {
                 return; // No Body to read
             }
 
             // reset if possible
-            if (!TryResetStream(httpRequest, out var oldPosition, ref body))
+            if (!TryResetStream(httpRequest, body, out var oldPosition))
             {
                 return;
             }
-            
+
             var content = BodyToString(body);
 
             //restore
@@ -79,12 +79,19 @@ namespace NLog.Web.LayoutRenderers
             return content;
         }
 
-        private bool TryResetStream(HttpRequest httpRequest, out long oldPosition, ref Stream body)
+        private bool TryResetStream(HttpRequest httpRequest, Stream body, out long oldPosition)
         {
             long? contentLength = httpRequest.ContentLength;
             oldPosition = body.Position;
             if (!body.CanSeek)
             {
+
+#if !ASP_NET_CORE
+                InternalLogger.Debug("AspNetRequestPostedBody: body stream cannot seek");
+                return false;
+#endif
+
+
                 if (oldPosition > 0 && oldPosition >= contentLength)
                 {
                     InternalLogger.Debug("AspNetRequestPostedBody: body stream cannot seek and already read. StreamPosition={0}", oldPosition);
@@ -92,7 +99,13 @@ namespace NLog.Web.LayoutRenderers
                 }
 
                 oldPosition = 0;
-                if (!TryEnableBuffering(httpRequest, contentLength, out body))
+                if (!TryEnableRewind(httpRequest))
+                {
+                    return false;
+                }
+
+                // can seek after buffering?
+                if (!body.CanSeek)
                 {
                     return false;
                 }
@@ -125,9 +138,9 @@ namespace NLog.Web.LayoutRenderers
                 return false;
             }
 
-body = GetBodyStream(httpRequest);
+            body = GetBodyStream(httpRequest);
 
-if (body == null)
+            if (body == null)
             {
                 InternalLogger.Debug("AspNetRequestPostedBody: body stream was null");
                 return false;
@@ -152,11 +165,9 @@ if (body == null)
             return body;
         }
 
-        ///<returns>Can seek now?</returns>
-        private bool TryEnableBuffering(HttpRequest httpRequest, long? contentLength, out Stream bodyStream)
+        private bool TryEnableRewind(HttpRequest httpRequest)
         {
-            bodyStream = null;
-
+            long? contentLength = httpRequest.ContentLength;
             if (MaxContentLength >= 0 && !contentLength.HasValue)
             {
                 InternalLogger.Debug("AspNetRequestPostedBody: body stream cannot seek with unknown ContentLength");
@@ -171,15 +182,7 @@ if (body == null)
             }
 
             EnableRewind(httpRequest, bufferThreshold);
-
-#if ASP_NET_CORE1 || ASP_NET_CORE2
-            bodyStream = httpRequest.Body;
-            return bodyStream?.CanSeek == true;
-#else
-            InternalLogger.Debug("AspNetRequestPostedBody: body stream cannot seek");
-            return false;
-#endif
-
+            return true;
         }
 
         private static void EnableRewind(HttpRequest httpRequest, int bufferThreshold)
