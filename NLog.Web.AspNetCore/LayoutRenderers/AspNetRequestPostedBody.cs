@@ -72,7 +72,8 @@ namespace NLog.Web.LayoutRenderers
 
         private static string BodyToString(Stream body)
         {
-            //note: dispose of StreamReader isn't doing things besides closing the stream (which can be turn off, and then it's a NOOP)
+            // Note: don't dispose the StreamReader, it will close the stream and that's unwanted. You could pass that that
+            // to the StreamReader in some platforms, but then the dispose will be a NOOP, so for platform compat just don't dispose
             var bodyReader = new StreamReader(body);
             var content = bodyReader.ReadToEnd();
             return content;
@@ -151,6 +152,7 @@ if (body == null)
             return body;
         }
 
+        ///<returns>Can seek now?</returns>
         private bool TryEnableBuffering(HttpRequest httpRequest, long? contentLength, out Stream bodyStream)
         {
             bodyStream = null;
