@@ -152,14 +152,12 @@ namespace NLog.Web.Tests.LayoutRenderers
         [Fact]
         public void MultipleValuesJsonQuoted()
         {
-            
             var expectedResult = @"{""Id"":""a'b,\""c\""""}";
 
             var renderer = CreateAndMockRenderer(CreateTuple("Id", "a'b", "\"c\""));
 
             renderer.QueryStringKeys = null;
-            renderer.OutputFormat = AspNetRequestLayoutOutputFormat.Json;
-            renderer.SingleAsArray = false;
+            renderer.OutputFormat = AspNetRequestLayoutOutputFormat.JsonDictionary;
 
             string result = renderer.Render(new LogEventInfo());
 
