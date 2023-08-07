@@ -25,7 +25,7 @@ namespace NLog.Web.Tests.LayoutRenderers
         [Fact]
         public void NullHttpContextRendersEmptyString()
         {
-            var renderer = new AspNetRequestValueLayoutRenderer();
+            var renderer = new AspNetRequestLayoutRenderer();
 
             string result = renderer.Render(new LogEventInfo());
 
@@ -43,7 +43,7 @@ namespace NLog.Web.Tests.LayoutRenderers
             var httpContext = Substitute.For<HttpContextBase>();
             httpContext.Request.Returns(x => { throw new HttpException(); });
 
-            var renderer = new AspNetRequestValueLayoutRenderer();
+            var renderer = new AspNetRequestLayoutRenderer();
             renderer.HttpContextAccessor = new FakeHttpContextAccessor(httpContext);
             renderer.Item = "key";
 
@@ -61,7 +61,7 @@ namespace NLog.Web.Tests.LayoutRenderers
             {
                 var httpContext = Substitute.For<HttpContextBase>();
 
-                var renderer = new AspNetRequestValueLayoutRenderer();
+                var renderer = new AspNetRequestLayoutRenderer();
                 renderer.HttpContextAccessor = new FakeHttpContextAccessor(httpContext);
                 renderer.Item = null;
 
@@ -75,7 +75,7 @@ namespace NLog.Web.Tests.LayoutRenderers
             {
                 var httpContext = Substitute.For<HttpContextBase>();
 
-                var renderer = new AspNetRequestValueLayoutRenderer();
+                var renderer = new AspNetRequestLayoutRenderer();
                 renderer.HttpContextAccessor = new FakeHttpContextAccessor(httpContext);
                 renderer.Item = "key";
 
@@ -95,7 +95,7 @@ namespace NLog.Web.Tests.LayoutRenderers
                 httpContext.Request.HttpContext.Items.Returns(new Dictionary<object, object>() { { "key", expectedResult } });
 #endif
 
-                var renderer = new AspNetRequestValueLayoutRenderer();
+                var renderer = new AspNetRequestLayoutRenderer();
                 renderer.HttpContextAccessor = new FakeHttpContextAccessor(httpContext);
                 renderer.Item = "key";
 
@@ -112,7 +112,7 @@ namespace NLog.Web.Tests.LayoutRenderers
             {
                 var httpContext = Substitute.For<HttpContextBase>();
 
-                var renderer = new AspNetRequestValueLayoutRenderer();
+                var renderer = new AspNetRequestLayoutRenderer();
                 renderer.HttpContextAccessor = new FakeHttpContextAccessor(httpContext);
                 renderer.QueryString = null;
 
@@ -126,7 +126,7 @@ namespace NLog.Web.Tests.LayoutRenderers
             {
                 var httpContext = Substitute.For<HttpContextBase>();
 
-                var renderer = new AspNetRequestValueLayoutRenderer();
+                var renderer = new AspNetRequestLayoutRenderer();
                 renderer.HttpContextAccessor = new FakeHttpContextAccessor(httpContext);
                 renderer.QueryString = "key";
 
@@ -154,7 +154,7 @@ namespace NLog.Web.Tests.LayoutRenderers
                 httpContext.Request.Query.Returns(queryCollection);
 #endif
 
-                var renderer = new AspNetRequestValueLayoutRenderer();
+                var renderer = new AspNetRequestLayoutRenderer();
                 renderer.HttpContextAccessor = new FakeHttpContextAccessor(httpContext);
                 renderer.QueryString = "key";
 
@@ -171,7 +171,7 @@ namespace NLog.Web.Tests.LayoutRenderers
             {
                 var httpContext = Substitute.For<HttpContextBase>();
 
-                var renderer = new AspNetRequestValueLayoutRenderer();
+                var renderer = new AspNetRequestLayoutRenderer();
                 renderer.HttpContextAccessor = new FakeHttpContextAccessor(httpContext);
                 renderer.Header = null;
 
@@ -185,7 +185,7 @@ namespace NLog.Web.Tests.LayoutRenderers
             {
                 var httpContext = Substitute.For<HttpContextBase>();
 
-                var renderer = new AspNetRequestValueLayoutRenderer();
+                var renderer = new AspNetRequestLayoutRenderer();
                 renderer.HttpContextAccessor = new FakeHttpContextAccessor(httpContext);
                 renderer.Header = "key";
 
@@ -206,7 +206,7 @@ namespace NLog.Web.Tests.LayoutRenderers
                 httpContext.Request.Headers.Returns(headerDictionary);
 #endif
 
-                var renderer = new AspNetRequestValueLayoutRenderer();
+                var renderer = new AspNetRequestLayoutRenderer();
                 renderer.HttpContextAccessor = new FakeHttpContextAccessor(httpContext);
                 renderer.Header = "key";
 
@@ -223,7 +223,7 @@ namespace NLog.Web.Tests.LayoutRenderers
             {
                 var httpContext = Substitute.For<HttpContextBase>();
 
-                var renderer = new AspNetRequestValueLayoutRenderer();
+                var renderer = new AspNetRequestLayoutRenderer();
                 renderer.HttpContextAccessor = new FakeHttpContextAccessor(httpContext);
                 renderer.Form = null;
 
@@ -237,7 +237,7 @@ namespace NLog.Web.Tests.LayoutRenderers
             {
                 var httpContext = Substitute.For<HttpContextBase>();
 
-                var renderer = new AspNetRequestValueLayoutRenderer();
+                var renderer = new AspNetRequestLayoutRenderer();
                 renderer.HttpContextAccessor = new FakeHttpContextAccessor(httpContext);
                 renderer.Form = "key";
 
@@ -259,7 +259,7 @@ namespace NLog.Web.Tests.LayoutRenderers
                 httpContext.Request.Form.Returns(formCollection);
 #endif
 
-                var renderer = new AspNetRequestValueLayoutRenderer();
+                var renderer = new AspNetRequestLayoutRenderer();
                 renderer.HttpContextAccessor = new FakeHttpContextAccessor(httpContext);
                 renderer.Form = "key";
 
@@ -277,7 +277,7 @@ namespace NLog.Web.Tests.LayoutRenderers
             {
                 var httpContext = Substitute.For<HttpContextBase>();
 
-                var renderer = new AspNetRequestValueLayoutRenderer();
+                var renderer = new AspNetRequestLayoutRenderer();
                 renderer.HttpContextAccessor = new FakeHttpContextAccessor(httpContext);
                 renderer.ServerVariable = null;
 
@@ -291,7 +291,7 @@ namespace NLog.Web.Tests.LayoutRenderers
             {
                 var httpContext = Substitute.For<HttpContextBase>();
 
-                var renderer = new AspNetRequestValueLayoutRenderer();
+                var renderer = new AspNetRequestLayoutRenderer();
                 renderer.HttpContextAccessor = new FakeHttpContextAccessor(httpContext);
                 renderer.ServerVariable = "key";
 
@@ -307,7 +307,7 @@ namespace NLog.Web.Tests.LayoutRenderers
                 var httpContext = Substitute.For<HttpContextBase>();
                 httpContext.Request.ServerVariables.Returns(new NameValueCollection { { "key", expectedResult } });
 
-                var renderer = new AspNetRequestValueLayoutRenderer();
+                var renderer = new AspNetRequestLayoutRenderer();
                 renderer.HttpContextAccessor = new FakeHttpContextAccessor(httpContext);
                 renderer.ServerVariable = "key";
 
@@ -331,7 +331,7 @@ namespace NLog.Web.Tests.LayoutRenderers
                 featureCollection.Set<IServerVariablesFeature>(serverVariablesFeature);
                 httpContext.Features.Returns(featureCollection);
 
-                var renderer = new AspNetRequestValueLayoutRenderer();
+                var renderer = new AspNetRequestLayoutRenderer();
                 renderer.HttpContextAccessor = new FakeHttpContextAccessor(httpContext);
                 renderer.ServerVariable = null;
 
@@ -350,7 +350,7 @@ namespace NLog.Web.Tests.LayoutRenderers
                 featureCollection.Set<IServerVariablesFeature>(serverVariablesFeature);
                 httpContext.Features.Returns(featureCollection);
 
-                var renderer = new AspNetRequestValueLayoutRenderer();
+                var renderer = new AspNetRequestLayoutRenderer();
                 renderer.HttpContextAccessor = new FakeHttpContextAccessor(httpContext);
                 renderer.ServerVariable = "key";
 
@@ -371,7 +371,7 @@ namespace NLog.Web.Tests.LayoutRenderers
                 featureCollection.Set<IServerVariablesFeature>(serverVariablesFeature);
                 httpContext.Request.HttpContext.Features.Returns(featureCollection);
 
-                var renderer = new AspNetRequestValueLayoutRenderer();
+                var renderer = new AspNetRequestLayoutRenderer();
                 renderer.HttpContextAccessor = new FakeHttpContextAccessor(httpContext);
                 renderer.ServerVariable = "key";
 
@@ -388,7 +388,7 @@ namespace NLog.Web.Tests.LayoutRenderers
             {
                 var httpContext = Substitute.For<HttpContextBase>();
 
-                var renderer = new AspNetRequestValueLayoutRenderer();
+                var renderer = new AspNetRequestLayoutRenderer();
                 renderer.HttpContextAccessor = new FakeHttpContextAccessor(httpContext);
                 renderer.Cookie = null;
 
@@ -402,7 +402,7 @@ namespace NLog.Web.Tests.LayoutRenderers
             {
                 var httpContext = Substitute.For<HttpContextBase>();
 
-                var renderer = new AspNetRequestValueLayoutRenderer();
+                var renderer = new AspNetRequestLayoutRenderer();
                 renderer.HttpContextAccessor = new FakeHttpContextAccessor(httpContext);
                 renderer.Cookie = "key";
 
@@ -430,7 +430,7 @@ namespace NLog.Web.Tests.LayoutRenderers
                 httpContext.Request.Cookies.Returns(cookieCollection);
 #endif
 
-                var renderer = new AspNetRequestValueLayoutRenderer();
+                var renderer = new AspNetRequestLayoutRenderer();
                 renderer.HttpContextAccessor = new FakeHttpContextAccessor(httpContext);
                 renderer.Cookie = "key";
 
