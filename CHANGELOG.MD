@@ -4,6 +4,16 @@ See also [releases](https://github.com/NLog/NLog.Web/releases) and [milestones](
 
 Date format: (year/month/day)
 
+### Version 6.1.1 (2026/01/31)
+
+- **NLog.Web.AspNetCore**
+  - [#1113](https://github.com/NLog/NLog.Web/pull/1113) Skip HttpRequest duration check when DurationThresholdMs = Zero (@snakefoot)
+  - [#1115](https://github.com/NLog/NLog.Web/pull/1115) Updated dependency NLog v6.1 (@snakefoot)
+
+- **NLog.Web**
+  - [#1113](https://github.com/NLog/NLog.Web/pull/1113) Skip HttpRequest duration check when DurationThresholdMs = Zero (@snakefoot)
+  - [#1115](https://github.com/NLog/NLog.Web/pull/1115) Updated dependency NLog v6.1 (@snakefoot)
+
 ### Version 6.1.0 (2025/11/12)
 
 - **NLog.Web.AspNetCore**
