@@ -32,8 +32,8 @@ The [NLog.Web.AspNetCore](https://www.nuget.org/packages/NLog.Web.AspNetCore)-pa
 
 The [NLog.Web](https://www.nuget.org/packages/NLog.Web)-package works with classic ASP.NET MVC with .NET Framework 3.5 - 4.8
 
-- [Supported targets for ASP.NET](https://nlog-project.org/config/?tab=targets&search=package:nlog.web)
-- [Supported layout renderers for ASP.NET](https://nlog-project.org/config/?tab=layout-renderers&search=package:nlog.web) 
+- [Targets for ASP.NET](https://nlog-project.org/config/?tab=targets&search=package:nlog.web)
+- [Layout renderers for ASP.NET](https://nlog-project.org/config/?tab=layout-renderers&search=package:nlog.web) 
 
 NLog 5.0 requires that NLog.config must include NLog.Web in extensions:
 ```xml
