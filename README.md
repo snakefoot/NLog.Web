@@ -28,7 +28,7 @@ The [NLog.Web.AspNetCore](https://www.nuget.org/packages/NLog.Web.AspNetCore)-pa
 - [Layout renderers for ASP.NET Core](https://nlog-project.org/config/?tab=layout-renderers&search=package:nlog.web.aspnetcore) 
 - [How to use structured logging](https://github.com/NLog/NLog/wiki/How-to-use-structured-logging)
 
-## ASP.NET (non-core)
+## ASP.NET Classic
 
 The [NLog.Web](https://www.nuget.org/packages/NLog.Web)-package works with classic ASP.NET MVC with .NET Framework 3.5 - 4.8
 
