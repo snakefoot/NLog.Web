@@ -24,13 +24,9 @@ For updates and releases, check [CHANGELOG.MD](CHANGELOG.MD) or [Releases](https
 ## ASP.NET Core
 The [NLog.Web.AspNetCore](https://www.nuget.org/packages/NLog.Web.AspNetCore)-package works with the new ASP.NET Core platforms .NET 6, 7, 8, 9 and 10
 
-- [Getting started for ASP.NET Core 6](https://github.com/NLog/NLog/wiki/Getting-started-with-ASP.NET-Core-6)
-- [Getting started for ASP.NET Core 5](https://github.com/NLog/NLog/wiki/Getting-started-with-ASP.NET-Core-5)
-- [Getting started for ASP.NET Core 3.1](https://github.com/NLog/NLog/wiki/Getting-started-with-ASP.NET-Core-3)
-- [Supported layout renderers for ASP.NET Core](https://nlog-project.org/config/?tab=layout-renderers&search=package:nlog.web.aspnetcore) 
-- [Getting started for .NET Core Console application](https://github.com/NLog/NLog/wiki/Getting-started-with-.NET-Core-2---Console-application)
+- [Tutorial for using NLog with ASP.NET Core](https://github.com/NLog/NLog/wiki/Getting-started-with-ASP.NET-Core-6)
+- [Layout renderers for ASP.NET Core](https://nlog-project.org/config/?tab=layout-renderers&search=package:nlog.web.aspnetcore) 
 - [How to use structured logging](https://github.com/NLog/NLog/wiki/How-to-use-structured-logging)
-- [Blog posts for how to get started with ASP.NET Core and NLog](https://github.com/damienbod/AspNetCoreNlog)
 
 ## ASP.NET (non-core)
 
